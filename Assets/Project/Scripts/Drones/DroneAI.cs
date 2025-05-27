@@ -29,6 +29,8 @@ public class DroneAI : MonoBehaviour
 
     private ResourceNode targetResource;
     private DroneController controller;
+    
+    private bool isCollecting = false;
 
     private void Start()
     {
@@ -59,7 +61,11 @@ public class DroneAI : MonoBehaviour
                     break;
 
                 case State.Collecting:
-                    StartCoroutine(CollectRoutine());
+                    if (!isCollecting)
+                    {
+                        isCollecting = true;
+                        StartCoroutine(CollectRoutine());
+                    }
                     break;
 
                 case State.Returning:
@@ -81,7 +87,7 @@ public class DroneAI : MonoBehaviour
         yield return new WaitForSeconds(2f);
         if (targetResource != null) Destroy(targetResource.gameObject);
         SetState(State.Returning);
-        StartCoroutine(StateMachine());
+        isCollecting = false;
     }
 
     private void SetState(State newState)
