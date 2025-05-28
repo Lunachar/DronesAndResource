@@ -11,7 +11,7 @@ public class ResourceManager : MonoBehaviour
     public int maxResources = 20;
     public Vector2 spawnAreaMin = new Vector2(-10, -10);
     public Vector2 spawnAreaMax = new Vector2(10, 10);
-    
+
     private List<ResourceNode> activeResources = new List<ResourceNode>();
 
     private void Start()
@@ -36,30 +36,34 @@ public class ResourceManager : MonoBehaviour
             Random.Range(spawnAreaMin.x, spawnAreaMax.x),
             0,
             Random.Range(spawnAreaMin.y, spawnAreaMax.y)
-            );
-        
+        );
+
         GameObject res = Instantiate(resourcePrefab, pos, Quaternion.identity);
         ResourceNode node = res.GetComponent<ResourceNode>();
         activeResources.Add(node);
     }
 
-    public ResourceNode GetClosestFreeResource(Vector3 position)
+    public ResourceNode GetBestResource(Vector3 dronePos, Vector3 basePos)
     {
-        float minDist = float.MaxValue;
-        ResourceNode closest = null;
+        ResourceNode bestNode = null;
+        float bestScore = float.MaxValue;
 
-        foreach (var res in activeResources)
+        foreach (var node in activeResources)
         {
-            if (res == null || res.IsClaimed) continue;
-            
-            float dist = Vector3.Distance(position, res.transform.position);
-            if (dist < minDist)
+            if (node == null || node.IsClaimed)
+                continue;
+
+            float distToDrone = Vector3.Distance(dronePos, node.transform.position);
+            float distToBase = Vector3.Distance(node.transform.position, basePos);
+            float score = distToDrone + distToBase * 0.5f;
+
+            if (score < bestScore)
             {
-                minDist = dist;
-                closest = res;
+                bestScore = score;
+                bestNode = node;
             }
         }
-        return closest;
+
+        return bestNode;
     }
-    
 }

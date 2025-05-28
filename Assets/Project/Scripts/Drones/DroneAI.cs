@@ -2,9 +2,13 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class DroneAI : MonoBehaviour
 {
+    [SerializeField] private GameObject progressCanvas;
+    [SerializeField] private Slider progressBar;
+    
     private ResourceManager resourceManager;
     private Transform homeBase;
 
@@ -84,10 +88,25 @@ public class DroneAI : MonoBehaviour
 
     private IEnumerator CollectRoutine()
     {
-        yield return new WaitForSeconds(2f);
+        progressCanvas.SetActive(true);
+        progressBar.value = 0;
+
+        float collectTime = 2f;
+        float elapsed = 0f;
+
+        while (elapsed < collectTime)
+        {
+            elapsed += Time.deltaTime;
+            progressBar.value = Mathf.Clamp01(elapsed / collectTime);
+            yield return null;
+        }
+        
         if (targetResource != null) Destroy(targetResource.gameObject);
         SetState(State.Returning);
         isCollecting = false;
+        
+        progressCanvas.SetActive(false);
+        progressBar.value = 0;
     }
 
     private void SetState(State newState)
@@ -124,12 +143,27 @@ public class DroneAI : MonoBehaviour
 
     private void FindResource()
     {
-        var res = resourceManager.GetClosestFreeResource(transform.position);
+        if (resourceManager == null || homeBase == null) return;
+        
+        var res = resourceManager.GetBestResource(transform.position, homeBase.position);
         if (res != null)
         {
             res.Claim();
             targetResource = res;
             SetState(State.MovingToResource);
         }
+    }
+
+    public void SetSpeed(int value)
+    {
+        if(agent != null)
+            agent.speed = value;
+    }
+
+    public void TogglePathRendering(bool show)
+    {
+        var line = GetComponent<LineRenderer>();
+        if(line != null)
+            line.enabled = show;
     }
 }
