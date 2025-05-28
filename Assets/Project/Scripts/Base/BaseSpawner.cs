@@ -13,7 +13,7 @@ public class BaseSpawner : MonoBehaviour
     [SerializeField] public Material blueMaterial;
     
     public GameObject dronePrefab;
-    public int numberOfDrones = 5;
+    public int numberOfDrones = 1;
     public float spawnInterval = 1f;
 
     private void Start()
