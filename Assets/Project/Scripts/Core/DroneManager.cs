@@ -17,9 +17,9 @@ public class DroneManager : MonoBehaviour
 
     [SerializeField] private int currentDroneCount = 0;
     [SerializeField] private ResourceManager resourceManager;
-    
+
     private Dictionary<Base.Faction, Base> bases = new();
-    public int numberOfFaction =2;
+    public int numberOfFaction = 2;
 
     private void Awake()
     {
@@ -31,17 +31,12 @@ public class DroneManager : MonoBehaviour
 
         Instance = this;
     }
-    
+
 
     public void RegisterBase(Base baseComponent)
     {
         if (!bases.ContainsKey(baseComponent.faction))
-        {
             bases[baseComponent.faction] = baseComponent;
-            Debug.Log($"[DroneManager] Зарегистрирована база для фракции {baseComponent.faction}");
-        }
-        else
-            Debug.LogWarning($"Base for faction {baseComponent.faction} already registered!");
     }
 
     public Transform GetBaseTransform(Base.Faction faction)
@@ -59,6 +54,7 @@ public class DroneManager : MonoBehaviour
         {
             return b;
         }
+
         return null;
     }
 
@@ -85,7 +81,7 @@ public class DroneManager : MonoBehaviour
                     Destroy(obj);
                     continue;
                 }
-                
+
                 drone.faction = faction;
                 drone.Initialize(faction, baseObj.GetMaterial());
 
@@ -114,17 +110,21 @@ public class DroneManager : MonoBehaviour
                 if (!drone.gameObject.activeSelf)
                 {
                     Transform baseTransform = GetBaseTransform(f);
-                    Vector3 spawnPos = baseTransform.position + new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
+                    Vector3 spawnPos = baseTransform.position +
+                                       new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
                     drone.transform.position = spawnPos;
+                    drone.gameObject.SetActive(true);
                     drone.GetComponent<NavMeshAgent>().Warp(spawnPos);
+
+                    drone.AnimateSpawn();
+                    StartCoroutine(StartDroneWhenResourcesReady(drone));
                 }
-                
-                drone.gameObject.SetActive(true);
-                StartCoroutine(StartDroneWhenResourcesReady(drone));
+
                 factionCounts[f]++;
             }
             else
             {
+                drone.ResetDrone();
                 drone.gameObject.SetActive(false);
             }
         }
@@ -136,7 +136,7 @@ public class DroneManager : MonoBehaviour
         {
             yield return new WaitForSeconds(0.5f);
         }
-        
+
         drone.StartWorking();
     }
 
@@ -160,13 +160,13 @@ public class DroneManager : MonoBehaviour
         var baseObj = GetBase(faction);
         if (baseObj != null)
             return baseObj.GetMaterial();
-        
+
         return null;
     }
 
     public void UnregisterResource(ResourceNode resourceNode)
     {
-        if(resourceNodes.Contains(resourceNode))
+        if (resourceNodes.Contains(resourceNode))
             resourceNodes.Remove(resourceNode);
     }
 }

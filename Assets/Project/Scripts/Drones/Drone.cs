@@ -50,7 +50,7 @@ public class Drone : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
 
-            if (state == DroneState.Idle && targetNode == null)
+            if ((state == DroneState.Idle || state == DroneState.Gathering) && targetNode == null)
             {
                 Transform baseTransform = DroneManager.Instance.GetBaseTransform(faction);
                 var node = DroneManager.Instance.GetNearestAvailaleResource(transform.position, baseTransform.position);
@@ -58,7 +58,7 @@ public class Drone : MonoBehaviour
                 if (node != null)
                 {
                     targetNode = node;
-                    targetNode.IsOccupied = true;
+                    targetNode.MarkOccupiedTemporarily();
                     MoveTo(targetNode.transform.position);
                     state = DroneState.MovingToResources;
                 }
@@ -74,7 +74,7 @@ public class Drone : MonoBehaviour
         
         if (targetNode != null)
         {
-            targetNode.IsOccupied = true;
+            targetNode.MarkOccupiedTemporarily();
             MoveTo(targetNode.transform.position);
             state = DroneState.MovingToResources;
         }
@@ -82,7 +82,10 @@ public class Drone : MonoBehaviour
 
     private void MoveTo(Vector3 position)
     {
-        agent.SetDestination(position);
+        if (agent != null && agent.enabled && agent.isOnNavMesh)
+        {
+            agent.SetDestination(position);
+        }
     }
 
     private void Update()
@@ -154,6 +157,30 @@ public class Drone : MonoBehaviour
            state = DroneState.ReturningToBase;
        }
     }
+
+    public void ResetDrone()
+    {
+        StopAllCoroutines();
+        
+        state = DroneState.Idle;
+        carriedAmount = 0;
+        targetNode = null;
+
+        progressBar.value = 0f;
+        progressCanvas.SetActive(false);
+        
+        if (agent != null && agent.enabled && agent.isOnNavMesh)
+        {
+            agent.ResetPath();
+        }
+        TogglePathRendering(false);
+
+        if (targetNode != null)
+        {
+            targetNode.IsOccupied = false;
+            targetNode = null;
+        }
+    }
     public void SetSpeed(int value)
     {
         if (agent != null)
@@ -198,22 +225,25 @@ public class Drone : MonoBehaviour
     
     // Effects
     
-    // public void AnimateSpawn()
-    // {
-    //     transform.localScale = Vector3.zero;
-    //     gameObject.SetActive(true);
-    //     StartCoroutine(ScaleUp());
-    // }
-    //
-    // private IEnumerator ScaleUp()
-    // {
-    //     Vector3 targetScale = Vector3.one;
-    //     float t = 0f;
-    //     while (t < 1)
-    //     {
-    //         t += Time.deltaTime * 2f;
-    //         transform.localScale = Vector3.Lerp(Vector3.zero, targetScale, t);
-    //         yield return null;
-    //     }
-    // }
+    public void AnimateSpawn()
+    {
+        if(gameObject.activeSelf || state != DroneState.Idle)
+            return;
+        
+        transform.localScale = Vector3.zero;
+        gameObject.SetActive(true);
+        StartCoroutine(ScaleUp());
+    }
+    
+    private IEnumerator ScaleUp()
+    {
+        Vector3 targetScale = Vector3.one;
+        float t = 0f;
+        while (t < 1)
+        {
+            t += Time.deltaTime * 2f;
+            transform.localScale = Vector3.Lerp(Vector3.zero, targetScale, t);
+            yield return null;
+        }
+    }
 }
