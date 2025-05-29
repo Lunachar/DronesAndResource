@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour
     public Toggle pathToggle;
 
     [Header("Stats")]
-    public TextMeshProUGUI blueCounterTExt;
+    public TextMeshProUGUI blueCounterText;
     public TextMeshProUGUI redCounterText;
 
     private void Start()
@@ -36,19 +36,22 @@ public class UIManager : MonoBehaviour
     private void OnDroneCountSliderChanged(float value)
     {
         droneCountText.text = $"Дроны на \n фракцию: {value}";
-        GameManager.Instance.SetDroneCountPerFaction((int)value);
+        DroneManager.Instance.SetDroneCount((int)value);
     }
 
     private void OnDroneSpeedSliderChanged(float value)
     {
         droneSpeedText.text = $"Скорость \n дронов: {value}";
-        GameManager.Instance.SetDroneSpeed((int)value);
+        DroneManager.Instance.SetDroneSpeed((int)value);
     }
 
     private void OnResourceSpawnRateFieldChanged(string input)
     {
         if(int.TryParse(input, out int value))
+        {
             GameManager.Instance.SetResourceSpawnRate(value);
+            resourceSpawnRateField.text = value.ToString("0");
+        }
     }
 
     private void OnTogglePath(bool isOn)
@@ -59,11 +62,12 @@ public class UIManager : MonoBehaviour
     {
         OnDroneCountSliderChanged(droneCountSlider.value);
         OnDroneSpeedSliderChanged(droneSpeedSlider.value);
+        resourceSpawnRateField.text = GameManager.Instance.GetResourceManager().spawnIntervals.ToString("0");
     }
 
     public void UpdateCounter(int blueCounter, int redCounter)
     {
-        blueCounterTExt.text = $"Синий: {blueCounter}";
+        blueCounterText.text = $"Синий: {blueCounter}";
         redCounterText.text = $"Красный: {redCounter}";
     }
 }

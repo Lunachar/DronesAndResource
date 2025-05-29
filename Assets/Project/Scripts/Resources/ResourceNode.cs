@@ -2,9 +2,12 @@ using UnityEngine;
 
 public class ResourceNode : MonoBehaviour
 {
-    private bool isClaimed = false;
-    public bool IsClaimed => isClaimed;
-    
-    public void Claim() => isClaimed = true;
-    
+    public bool IsOccupied { get; set; } = false;
+
+    public void OnGathered()
+    {
+        DroneManager.Instance.UnregisterResource(this);
+        gameObject.SetActive(false);
+    }
+
 }

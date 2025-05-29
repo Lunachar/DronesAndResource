@@ -50,7 +50,7 @@ public class ResourceManager : MonoBehaviour
 
         foreach (var node in activeResources)
         {
-            if (node == null || node.IsClaimed)
+            if (node == null || !node.gameObject.activeInHierarchy || node.IsOccupied)
                 continue;
 
             float distToDrone = Vector3.Distance(dronePos, node.transform.position);
@@ -65,5 +65,21 @@ public class ResourceManager : MonoBehaviour
         }
 
         return bestNode;
+    }
+
+    public bool HasAvailableResources()
+    {
+        foreach (var node in activeResources)
+        {
+            if (node != null && node.gameObject.activeInHierarchy && !node.IsOccupied)
+                return true;
+        }
+
+        return false;
+    }
+
+    public void SetResourceSpawnRate(int value)
+    {
+        spawnIntervals = value;
     }
 }

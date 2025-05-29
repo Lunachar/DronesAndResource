@@ -1,15 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private ResourceManager resourceManager;
     public static GameManager Instance;
     
-    public int droneCountPerFaction = 3;
-    public float droneSpeed = 5f;
-    public float resourceSpawnRate = 2f;
     public bool showPaths = true;
 
     public UIManager ui;
@@ -21,43 +20,40 @@ public class GameManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject); // предотвращает дубликаты
+            Destroy(gameObject);
             return;
         }
         Instance = this;
     }
 
-    public void SetDroneCountPerFaction(int value)
+    private void Start()
     {
-        droneCountPerFaction = value;
-    }
-
-    public void SetDroneSpeed(int value)
-    {
-        droneSpeed = value;
-        foreach (var drone in FindObjectsOfType<DroneAI>())
-        {
-            drone.SetSpeed(value);
-        }
+        
     }
 
     public void SetResourceSpawnRate(int value)
     {
-        resourceSpawnRate = value;
+        resourceManager.SetResourceSpawnRate(value);
+    }
+
+    public ResourceManager GetResourceManager()
+    {
+        return resourceManager;
     }
 
     public void SetPathRendering(bool value)
     {
         showPaths = value;
-        foreach (var drone in FindObjectsOfType<DroneAI>())
+        foreach (var drone in DroneManager.Instance.dronePool)
         {
-            drone.TogglePathRendering(value);
+            //if (drone.gameObject.activeInHierarchy)
+                drone.TogglePathRendering(value);
         }
     }
 
-    public void AddResourceCollected(DroneAI.Faction faction)
+    public void AddResourceCollected(Base.Faction faction)
     {
-        if(faction == DroneAI.Faction.Blue)
+        if(faction == Base.Faction.Blue)
             blueScore++;
         else
             redScore++;

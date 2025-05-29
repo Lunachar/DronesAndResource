@@ -114,7 +114,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6682543558823688035}
-  - component: {fileID: 2565215035361995348}
+  - component: {fileID: 31081427108304461}
   m_Layer: 0
   m_Name: BaseStation
   m_TagString: Untagged
@@ -138,7 +138,7 @@ Transform:
   - {fileID: 1877299927036467852}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2565215035361995348
+--- !u!114 &31081427108304461
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,12 +147,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 8955857533309903839}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd78c30807edde642b7b9a88a12dfc58, type: 3}
+  m_Script: {fileID: 11500000, guid: 0761ac6ae6f88f743bae5344306b64ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseFaction: 0
-  redMaterial: {fileID: 2100000, guid: 4f6eab0ff182b754a9295ab267e3921e, type: 2}
-  blueMaterial: {fileID: 2100000, guid: 291604928eee18841a3321ecedfcedc0, type: 2}
-  dronePrefab: {fileID: 2222517385035297788, guid: ecb245cd250a2b749b3757de736a7b45, type: 3}
-  numberOfDrones: 5
-  spawnInterval: 1
+  faction: 0
+  material: {fileID: 0}
