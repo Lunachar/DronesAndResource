@@ -42,41 +42,4 @@ public class BaseSpawner : MonoBehaviour
             Random.Range(-10f, 10f)
         );
     }
-    //
-    // private void AssignMaterial()
-    // {
-    //     var renderer = GetComponentInChildren<Renderer>();
-    //     if (renderer == null) return;
-    //
-    //     Material instancedMaterial = null;
-    //
-    //     if (baseFaction == Faction.Red && redMaterial != null)
-    //         instancedMaterial = new Material(redMaterial);
-    //     else if (baseFaction == Faction.Blue && blueMaterial != null)
-    //         instancedMaterial = new Material(blueMaterial);
-    //     
-    //     if (instancedMaterial != null)
-    //         renderer.material = instancedMaterial;
-    // }
-    //
-    // public Material GetAssignedMaterial()
-    // {
-    //     if (baseFaction == Faction.Red && redMaterial != null)
-    //         return new Material(redMaterial);
-    //     else if (baseFaction == Faction.Blue && blueMaterial != null)
-    //         return new Material(blueMaterial);
-    //     return null;
-    // }
-    // public static Transform GetBaseTransform(Faction faction)
-    // { 
-    //     switch (faction)
-    //     {
-    //         case Faction.Red:
-    //             return redBaseTransform != null ? redBaseTransform : throw new Exception("Red base transform is not assigned!");
-    //         case Faction.Blue:
-    //             return blueBaseTransform != null ? blueBaseTransform : throw new Exception("Blue base transform is not assigned!");
-    //         default:
-    //             throw new Exception("Unknown faction!");
-    //     }
-    // }
 }
