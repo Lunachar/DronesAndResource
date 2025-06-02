@@ -86,7 +86,6 @@ GameObject:
   - component: {fileID: 3041235994902065769}
   - component: {fileID: 5737855990975824940}
   - component: {fileID: 4642076560120005452}
-  - component: {fileID: 5750708006907194319}
   m_Layer: 5
   m_Name: ProgressCanv
   m_TagString: Untagged
@@ -154,19 +153,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &5750708006907194319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043553027831513892}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 987f628a7e17b634897c3794c424f87c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
 --- !u!1 &2222517385035297788
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,8 +163,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7987194828305814831}
   - component: {fileID: -6050623679906980055}
-  - component: {fileID: 4652871386974024063}
   - component: {fileID: 584558148100861698}
+  - component: {fileID: 5050546339237314854}
+  - component: {fileID: 811609439323092848}
   m_Layer: 0
   m_Name: Drone
   m_TagString: Untagged
@@ -225,24 +212,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &4652871386974024063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2222517385035297788}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e899d60356554e628cb37f18cd0ee5c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lineRenderer: {fileID: 584558148100861698}
-  progressCanvas: {fileID: 2043553027831513892}
-  progressBar: {fileID: 8827120554124173437}
-  targetNode: {fileID: 0}
-  faction: 0
-  resourcePrefab: {fileID: 4322444859360873353, guid: 43339086f1add5d4e96e0852412dab6c, type: 3}
 --- !u!120 &584558148100861698
 LineRenderer:
   serializedVersion: 2
@@ -347,6 +316,38 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &5050546339237314854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2222517385035297788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cdf4858407f2bc42a1b0edcede58532, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnEffect: {fileID: 0}
+  collectEffect: {fileID: 0}
+  deliveryEffect: {fileID: 0}
+--- !u!114 &811609439323092848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2222517385035297788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1b77e250dc04cd479dd636455816cbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  droneSpawnPoint: {fileID: 0}
+  spawnRadius: 2
+  moveSpeed: 5
+  rotationSpeed: 5
+  detectionRadius: 10
 --- !u!1 &2350320208041380510
 GameObject:
   m_ObjectHideFlags: 0
